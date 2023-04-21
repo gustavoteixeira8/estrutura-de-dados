@@ -28,6 +28,10 @@ func (v *UnsortedVector) Remove(val int) (int, error) {
 
 	valIndex := v.Search(val)
 
+	if valIndex == -1 {
+		return -1, errors.New("value not found in vector")
+	}
+
 	for i := valIndex; i > v.lastPos; i++ {
 		v.vector[i] = v.vector[i+1]
 	}
