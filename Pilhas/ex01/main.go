@@ -34,6 +34,9 @@ func (s *Stack) Remove() error {
 }
 
 func (s *Stack) Tail() string {
+	if s.lastPos == -1 {
+		return ""
+	}
 	return s.vector[s.lastPos]
 }
 
@@ -56,42 +59,18 @@ type ExpressionValidator struct {
 func (v *ExpressionValidator) Validate(expression string) bool {
 	for _, strRune := range expression {
 		str := strings.Trim(string(strRune), " ")
-		if str == "{" || str == "}" {
-			v.stack.Insert(str)
-			continue
-		}
-		if str == "[" || str == "]" {
-			v.stack.Insert(str)
-			continue
-		}
-		if str == "(" || str == ")" {
-			v.stack.Insert(str)
-		}
-	}
 
-	vector := v.stack.Vector()
-
-	for i := 0; i < v.stack.lastPos; i++ {
-		str := vector[i]
-		if str == "{" && v.stack.Tail() == "}" {
-			v.stack.Remove()
-			continue
-		}
-
-		if str == "[" && v.stack.Tail() == "]" {
-			v.stack.Remove()
-			continue
-		}
-
-		if str == "(" && v.stack.Tail() == ")" {
-			v.stack.Remove()
-			continue
-		}
-	}
-
-	for _, strRune := range expression {
-		str := strings.Trim(string(strRune), " ")
 		if str == "{" || str == "[" || str == "(" {
+			v.stack.Insert(str)
+			continue
+		}
+
+		tail := v.stack.Tail()
+		brackets := str == "}" && tail == "{"
+		squareBrackets := str == "]" && tail == "["
+		parentheses := str == ")" && tail == "("
+
+		if brackets || squareBrackets || parentheses {
 			v.stack.Remove()
 		}
 	}
@@ -106,6 +85,5 @@ func NewExpressionValidator() *ExpressionValidator {
 
 func main() {
 	v := NewExpressionValidator()
-	fmt.Println(v.Validate("a{b[c]d}(e)f"))
-
+	fmt.Println(v.Validate("a(b[c{d}])()[{[]}]"))
 }

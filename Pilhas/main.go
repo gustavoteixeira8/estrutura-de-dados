@@ -33,6 +33,9 @@ func (s *Stack) Remove() error {
 }
 
 func (s *Stack) Tail() int {
+	if s.lastPos == -1 {
+		return -1
+	}
 	return s.vector[s.lastPos]
 }
 
