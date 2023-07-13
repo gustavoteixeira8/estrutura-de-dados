@@ -85,5 +85,12 @@ func NewExpressionValidator() *ExpressionValidator {
 
 func main() {
 	v := NewExpressionValidator()
-	fmt.Println(v.Validate("a(b[c{d}])()[{[]}]"))
+
+	// c[d]
+	// a{b[c]d}e
+	// a{b(c]d}e
+	// a[b{c}d]e}
+	// a{b(c)
+
+	fmt.Println(v.Validate("a{b(c)"))
 }
