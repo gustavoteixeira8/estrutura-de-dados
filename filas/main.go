@@ -46,14 +46,11 @@ func (q *Queue) Dequeue() error {
 	return nil
 }
 
-func (q *Queue) Head() (int, error) {
-	if q.currLen == 0 {
-		return -1, errors.New("queue is empty")
+func (q *Queue) Head() int {
+	if q.firstPos == -1 {
+		return -1
 	}
-	if q.currLen == q.maxLen-1 {
-		return -1, errors.New("queue is full")
-	}
-	return q.vector[q.firstPos], nil
+	return q.vector[q.firstPos]
 }
 
 func (q *Queue) Vector() []int {
@@ -74,30 +71,16 @@ func main() {
 	q.Enqueue(15)
 	q.Enqueue(20)
 	q.Enqueue(25)
-
-	fmt.Println(q.Vector())
-
-	q.Dequeue()
-
-	fmt.Println(q.Vector())
-
 	q.Enqueue(30)
-
-	q.Dequeue()
-	q.Dequeue()
-	q.Dequeue()
 	q.Enqueue(35)
 	q.Enqueue(40)
 	q.Enqueue(45)
 	q.Enqueue(50)
 	q.Enqueue(55)
+
+	q.Dequeue()
+
 	q.Enqueue(60)
-	q.Dequeue()
-	q.Dequeue()
-	q.Dequeue()
-	q.Dequeue()
-	q.Dequeue()
-	// q.Dequeue()
 
 	fmt.Println(q.Vector())
 	fmt.Println(q.Head())
