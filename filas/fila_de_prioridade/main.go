@@ -70,7 +70,10 @@ func main() {
 	q.Enqueue(30)
 	q.Enqueue(5)
 	q.Enqueue(2)
-	// q.Dequeue()
+	q.Dequeue()
+	q.Dequeue()
+	q.Dequeue()
+	q.Enqueue(6)
 
 	fmt.Println(q.Vector())
 	fmt.Println(q.Head())
